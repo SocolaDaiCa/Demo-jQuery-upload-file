@@ -1,0 +1,47 @@
+<meta charset="utf-8">
+<script src="//code.jquery.com/jquery.js"></script>
+<form action="upload-endpoint.php" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
+	<img src="" alt="" id="avatar-preview" style="max-width:300px; max-height: 500px;"><br>
+	<span>Username</span><input type="text" name="username"><br>
+	<span>Avartar</span><input type="file" name="avatar" id="avatar">
+	<button type="button" id="btn-submit">Submit</button>
+</form>
+<script>
+	$(function() {
+		$('[name=avatar]').change(function(e) {
+			var files = e.target.files || e.dataTransfer.files;
+			if (!files.length) return;
+			var avatar = files[0];
+			/* create preview avatar */
+			var image = new Image();
+            var reader = new FileReader();
+
+            reader.onload = (e) => {
+                $('#avatar-preview').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(avatar);
+		});
+		$('#btn-submit').click(function() {
+			var username = $('[name=username]').val();
+			var files = document.getElementById('avatar').files;
+			if(!files.length){
+				return alert('avatar không thể bỏ trống');
+			}
+			var avatar = files[0];
+			var data = new FormData();
+			data.append('username', username);
+			data.append('avatar', avatar);
+			$.ajax({
+                url: "upload-endpoint.php",
+                processData: false,
+                contentType: false,
+                data,
+                type: 'post',
+                success: function(res) {
+                    console.log(res);
+                    alert(res);
+                }
+            });
+		})
+	});
+</script>
