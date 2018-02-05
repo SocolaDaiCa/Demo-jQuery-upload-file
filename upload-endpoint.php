@@ -1,6 +1,5 @@
 <?php
 	define('MB_2', 1000 * 1000 * 2);
-
 	$dir = "uploads/";
 	$avatar = $_FILES["avatar"];
 	$path = $dir . basename($avatar["name"]);
